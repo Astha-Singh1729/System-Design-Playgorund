@@ -4,6 +4,7 @@ import uvicorn
 from database import engine, SessionLocal
 import models, schemas, utils
 from fastapi.responses import RedirectResponse
+from sqlalchemy import text
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -15,6 +16,17 @@ def get_db():
         yield db
     finally:
         db.close()
+
+@app.get("/admin/reset_db")
+def reset_database(db: Session = Depends(get_db)):
+    # TRUNCATE is faster than DELETE and 'RESTART IDENTITY' resets ID back to 1
+    try:
+        db.execute(text("TRUNCATE TABLE urls RESTART IDENTITY CASCADE;"))
+        db.commit()
+        return {"detail": "Database wiped! Next ID will be 1."}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/url", response_model=schemas.URLInfo)
 def create_url(url: schemas.URLCreate, request: Request, db: Session = Depends(get_db)):
@@ -66,6 +78,17 @@ def get_url_info(short_code: str, request: Request, db: Session = Depends(get_db
             "created_at": db_url.created_at
         }
     
+    raise HTTPException(status_code=404, detail="URL not found")
+
+@app.delete("/{short_code}")
+def delete_url(short_code: str, db:Session = Depends(get_db)):
+    db_url = db.query(models.URLItem).filter(models.URLItem.short_code == short_code).first()
+
+    if db_url:
+        db.delete(db_url)
+        db.commit()
+        return {"detail": f"URL {short_code} deleted successfully"}
+
     raise HTTPException(status_code=404, detail="URL not found")
 
 if __name__ == "__main__":

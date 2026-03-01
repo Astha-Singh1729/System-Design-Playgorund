@@ -12,6 +12,7 @@ uvicorn = "^0.40.0"
 sqlalchemy = "^2.0.46"
 psycopg2-binary = "^2.9.11"
 python-dotenv = "^1.2.1"
+sqids = "^0.5.2"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

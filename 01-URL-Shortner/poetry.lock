@@ -459,6 +459,18 @@ files = [
 cli = ["click (>=5.0)"]
 
 [[package]]
+name = "sqids"
+version = "0.5.2"
+description = "Generate YouTube-like ids from numbers."
+optional = false
+python-versions = ">=3.6"
+groups = ["main"]
+files = [
+    {file = "sqids-0.5.2-py3-none-any.whl", hash = "sha256:0089ba823e21fd44290c7225f02fb0b5140c36e41959c04d86d3f6f2513799be"},
+    {file = "sqids-0.5.2.tar.gz", hash = "sha256:5ac08f0c5c9b6814bc2e7c79ee5931e0849d25d95c50e415771b022a44f58af9"},
+]
+
+[[package]]
 name = "sqlalchemy"
 version = "2.0.46"
 description = "Database Abstraction Library"
@@ -625,4 +637,4 @@ standard = ["colorama (>=0.4) ; sys_platform == \"win32\"", "httptools (>=0.6.3)
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.10"
-content-hash = "b94add0e6a6d9cfea8398cede257e580609d19d4dddd3844ebce3b452bb123c4"
+content-hash = "5a2ca6fa5ae9ae9b04ec542cd987cc7d216104a37b3c55c19925b6ba5b2fb86b"
